@@ -5,6 +5,18 @@ export class EventDelegation {
     this.listeners = []
   }
 
+  _assignOptions (event, listener) {
+    let options = {}
+
+    if (typeof event === 'string') {
+      Object.assign(options, { event, listener })
+    } else {
+      options = event
+    }
+
+    return options
+  }
+
   /**
    * @typedef Options
    * @property {String} event
@@ -16,13 +28,7 @@ export class EventDelegation {
    * @param {Function} [listener]
    */
   on (event, listener = undefined) {
-    let options = {}
-
-    if (typeof event === 'string') {
-      Object.assign(options, { event, listener })
-    } else {
-      options = event
-    }
+    const options = this._assignOptions(event, listener)
 
     this.listeners.push(options.listener)
     this.element.addEventListener(options.event, event => {
@@ -37,13 +43,7 @@ export class EventDelegation {
    * @param {Function} [listener]
    */
   off (event, listener = undefined) {
-    let options = {}
-
-    if (typeof event === 'string') {
-      Object.assign(options, { event, listener })
-    } else {
-      options = event
-    }
+    const options = this._assignOptions(event, listener)
 
     this.listeners = this.listeners.filter(item => item !== options.listener)
     this.element.removeEventListener(options.event, options.listener)
