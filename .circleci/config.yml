@@ -1,0 +1,15 @@
+version: 2.1
+
+jobs:
+  test_node_latest:
+    docker:
+      - image: circleci/node:latest
+    steps:
+      - checkout
+      - run: npm install
+      - run: npm run test
+
+workflows:
+  build_and_test:
+    jobs:
+      - test_node_latest

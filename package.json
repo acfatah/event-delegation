@@ -1,0 +1,35 @@
+{
+  "name": "@acfatah/event-delegation",
+  "version": "1.0.0",
+  "description": "A delegated event module for ES6.",
+  "main": "src/index.js",
+  "type": "module",
+  "scripts": {
+    "dev": "vitest",
+    "lint": "standard src",
+    "test": "vitest run"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/acfatah/event-delegation.git"
+  },
+  "keywords": [],
+  "author": "Achmad F. Ibrahim <acfatah@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/acfatah/event-delegation/issues"
+  },
+  "homepage": "https://github.com/acfatah/event-delegation#readme",
+  "devDependencies": {
+    "@testing-library/dom": "^9.2.0",
+    "global-jsdom": "^8.8.0",
+    "install": "^0.13.0",
+    "jsdom": "^21.1.1",
+    "npm": "^9.6.2",
+    "standard": "^17.0.0",
+    "vitest": "^0.29.2"
+  },
+  "dependencies": {
+    "remove": "^0.1.5"
+  }
+}
