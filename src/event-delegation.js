@@ -20,7 +20,7 @@ export class EventDelegation {
   /**
    * @typedef Options
    * @property {string} event
-   * @property {string} target
+   * @property {string} listener
    */
 
   /**
