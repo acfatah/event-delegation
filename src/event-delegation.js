@@ -19,12 +19,12 @@ export class EventDelegation {
 
   /**
    * @typedef Options
-   * @property {String} event
-   * @property {String} target
+   * @property {string} event
+   * @property {string} target
    */
 
   /**
-   * @param {String|Options} event
+   * @param {string|Options} event
    * @param {Function} [listener]
    */
   on (event, listener = undefined) {
@@ -39,7 +39,7 @@ export class EventDelegation {
   }
 
   /**
-   * @param {String|Options} event
+   * @param {string|Options} event
    * @param {Function} [listener]
    */
   off (event, listener = undefined) {
