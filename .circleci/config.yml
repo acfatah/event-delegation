@@ -3,7 +3,7 @@ version: 2.1
 jobs:
   test_node_latest:
     docker:
-      - image: circleci/node:latest
+      - image: cimg/node:current
     steps:
       - checkout
       - run: npm install
