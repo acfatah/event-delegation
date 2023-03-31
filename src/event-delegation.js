@@ -1,51 +1,91 @@
 export class EventDelegation {
+  /**
+   * @typedef Listener
+   * @property {Function} callback
+   * @property {boolean} capture
+   */
+
+  /**
+   * @typedef {Object} ListenersObject
+   * @property {Listener[]} [event]
+   */
+
   /** @param {Element} element */
   constructor (element) {
+    /** @type {Element} */
     this.element = element
-    this.listeners = []
+
+    /** @type {ListenersObject} */
+    this.listeners = {}
   }
 
-  _assignOptions (event, listener) {
-    let options = {}
+  _resolveArguments (event, listener, options) {
+    let args = {}
 
     if (typeof event === 'string') {
-      Object.assign(options, { event, listener })
+      Object.assign(args, { event, listener })
+      if (options !== undefined && typeof options === 'object') Object.assign(args, { options })
+      if (options === true) Object.assign(args, { options: { capture: true } })
     } else {
-      options = event
+      args = event
     }
 
-    return options
+    return args
   }
+
+  /** @param {Event} event */
+  _callListeners (event) {
+    if (!this.listeners[event.type]) return
+
+    for (const listener of this.listeners[event.type]) {
+      listener.callback(event)
+      if (listener.capture) return
+    }
+  }
+
+  /**
+   * @typedef ArgumentsObject
+   * @property {string} event
+   * @property {Function} [listener]
+   * @property {boolean|Options} [options]
+   */
 
   /**
    * @typedef Options
-   * @property {string} event
-   * @property {string} listener
+   * @property {boolean} [capture]
    */
 
   /**
-   * @param {string|Options} event
+   * @param {string|ArgumentsObject} event
    * @param {Function} [listener]
+   * @param {Options} [options]
    */
-  on (event, listener = undefined) {
-    const options = this._assignOptions(event, listener)
+  on (event, listener = undefined, options = undefined) {
+    const args = this._resolveArguments(event, listener, options)
 
-    this.listeners.push(options.listener)
-    this.element.addEventListener(options.event, event => {
-      for (const listener of this.listeners) {
-        listener(event)
-      }
+    if (!this.listeners[args.event]) {
+      this.element.addEventListener(args.event, this._callListeners.bind(this))
+      this.listeners[args.event] = []
+    }
+
+    this.listeners[args.event].push({
+      event: args.event,
+      callback: args.listener,
+      capture: args.options?.capture || false
     })
   }
 
   /**
-   * @param {string|Options} event
+   * @param {string|ArgumentsObject} event
    * @param {Function} [listener]
+   * @param {Options} [options]
    */
-  off (event, listener = undefined) {
-    const options = this._assignOptions(event, listener)
+  off (event, listener = undefined, options = undefined) {
+    const args = this._resolveArguments(event, listener, options)
 
-    this.listeners = this.listeners.filter(item => item !== options.listener)
-    this.element.removeEventListener(options.event, options.listener)
+    this.listeners[args.event] = this.listeners[args.event].filter(
+      /** @param {Listener} listener */
+      listener => listener.callback !== args.listener
+    )
   }
 }

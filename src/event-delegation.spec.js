@@ -57,7 +57,59 @@ describe('EventDelegation', () => {
   })
 
   describe('event propagation', () => {
-    it.todo('listener should capture unbubbled event', () => {})
+    describe('using string, callback and boolean arguments', () => {
+      it('should stop if options.capture is thruthy', () => {
+        const div = document.createElement('div')
+        div.innerHTML = `
+          <div class="parent">
+            <label for="username">Username</label>
+            <input id="username" />
+            <button>Print Username</button>
+          </div>
+        `
+        const eventDelegation = new EventDelegation(div)
+        /** @type {Element} */
+        const button = div.querySelector('button')
+        const parentListener = vi.fn()
+        const buttonListener = vi.fn()
+
+        eventDelegation.on('click', buttonListener, true)
+        eventDelegation.on('click', parentListener)
+
+        button.click()
+        expect(buttonListener).toBeCalled()
+        expect(parentListener).not.toBeCalled()
+      })
+    })
+
+    describe('using object argument', () => {
+      it('should stop if options.capture is thruthy', () => {
+        const div = document.createElement('div')
+        div.innerHTML = `
+          <div class="parent">
+            <label for="username">Username</label>
+            <input id="username" />
+            <button>Print Username</button>
+          </div>
+        `
+        const eventDelegation = new EventDelegation(div)
+        /** @type {Element} */
+        const button = div.querySelector('button')
+        const parentListener = vi.fn()
+        const buttonListener = vi.fn()
+
+        eventDelegation.on({
+          event: 'click',
+          listener: buttonListener,
+          options: { capture: true }
+        })
+        eventDelegation.on({ event: 'click', listener: parentListener })
+
+        button.click()
+        expect(buttonListener).toBeCalled()
+        expect(parentListener).not.toBeCalled()
+      })
+    })
   })
 
   describe('listener removal using options object', () => {
