@@ -54,6 +54,29 @@ describe('EventDelegation', () => {
         expect(listener).toHaveBeenCalled()
       })
     })
+
+    describe('using custom event and listener arguments', () => {
+      it('register the event listener', () => {
+        const div = document.createElement('div')
+        div.innerHTML = `
+            <div>
+              <label for="username">Username</label>
+              <input id="username" />
+              <button>Print Username</button>
+            </div>
+          `
+        const eventDelegation = new EventDelegation(div)
+        /** @type {Element} button */
+        const button = div.querySelector('button')
+        const listener = vi.fn()
+        const customEvent = new Event('custom-event', { bubbles: true, cancelable: true, composed: false })
+
+        eventDelegation.on(customEvent, listener)
+        button.dispatchEvent(customEvent)
+
+        expect(listener).toHaveBeenCalled()
+      })
+    })
   })
 
   describe('event propagation', () => {

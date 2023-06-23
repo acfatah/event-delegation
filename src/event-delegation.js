@@ -22,8 +22,8 @@ export class EventDelegation {
   _resolveArguments (event, listener, options) {
     let args = {}
 
-    if (typeof event === 'string') {
-      Object.assign(args, { event, listener })
+    if (typeof event === 'string' || event instanceof Event) {
+      Object.assign(args, { event: (event instanceof Event) ? event.type : event, listener })
       if (options !== undefined && typeof options === 'object') Object.assign(args, { options })
       if (options === true) Object.assign(args, { options: { capture: true } })
     } else {

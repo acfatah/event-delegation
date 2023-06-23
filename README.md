@@ -5,7 +5,7 @@
 </a>
 
 <a href="https://dl.circleci.com/status-badge/redirect/gh/acfatah/event-delegation/tree/main">
-  <img alt="CircleCI" src="https://img.shields.io/circleci/build/github/acfatah/event-delegation/main">
+  <img alt="CircleCI" src="https://img.shields.io/circleci/build/github/acfatah/event-delegation/main?style=flat-square">
 </a>
 
 <a href="https://codeclimate.com/github/acfatah/event-delegation">
