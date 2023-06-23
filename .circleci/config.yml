@@ -9,7 +9,16 @@ jobs:
       - run: npm install
       - run: npm run test
 
+  test_node_19:
+    docker:
+      - image: cimg/node:19.8
+    steps:
+      - checkout
+      - run: npm install
+      - run: npm run test
+
 workflows:
   build_and_test:
     jobs:
       - test_node_latest
+      - test_node_19
